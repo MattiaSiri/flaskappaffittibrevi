@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica Prenotazione</title>
+
+    <!-- Collegamenti ai file CSS di Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <div class="card mb-0 colored-box"> 
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">Modifica Prenotazione</h2>
+            </div>
+            <div class="card-body">
+                <!-- Aggiungi questi campi nel form dove stai eseguendo la modifica -->
+                <form action="{{ url_for('salva_modifiche', id=prenotazione.id) }}" method="post">
+
+                    <div class="form-group">
+                        <label for="nome_cognome">Nome e Cognome:</label>
+                        <input type="text" class="form-control" id="nome_cognome" name="nome_cognome" value="{{ prenotazione.nome_cognome }}" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numero_telefono">Numero di Telefono:</label>
+                        <input type="tel" class="form-control" id="numero_telefono" name="numero_telefono" value="{{ prenotazione.numero_telefono }}" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data_checkin">Data Check-in:</label>
+                        <input type="date" class="form-control" id="data_checkin" name="data_checkin" value="{{ prenotazione.data_checkin.strftime('%Y-%m-%d') }}" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data_checkout">Data Check-out:</label>
+                        <input type="date" class="form-control" id="data_checkout" name="data_checkout" value="{{ prenotazione.data_checkout.strftime('%Y-%m-%d') }}" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numero_ospiti">Numero Ospiti:</label>
+                        <input type="number" class="form-control" id="numero_ospiti" name="numero_ospiti" value="{{ prenotazione.numero_ospiti }}" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="totale_lordo">Totale Lordo:</label>
+                        <input type="number" step="0.01" class="form-control" id="totale_lordo" name="totale_lordo" value="{{ prenotazione.totale_lordo }}" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="no_tax">No Tax:</label>
+                        <input type="number" step="0.01" class="form-control" id="no_tax" name="no_tax" value="{{ prenotazione.no_tax }}" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="commissioni">Commissioni:</label>
+                        <input type="number" step="0.01" class="form-control" id="commissioni" name="commissioni" value="{{ prenotazione.commissioni }}" >
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Salva Modifiche</button>
+                    <a href="{{ url_for('Prenotazioni') }}" class="btn btn-secondary">Annulla</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Collegamenti ai file JavaScript di Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

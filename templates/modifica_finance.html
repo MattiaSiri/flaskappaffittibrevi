@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica Finanza</title>
+
+    <!-- Collegamenti ai file CSS di Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <div class="card mb-0 colored-box"> 
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">Modifica Finanza</h2>
+            </div>
+            <div class="card-body">
+                <!-- Aggiungi questi campi nel form dove stai eseguendo la modifica -->
+                <form action="{{ url_for('salva_modifiche_finance', id=finance_entry.id) }}" method="post">
+                    
+                    <div class="form-group">
+                        <label for="data_scadenza">Data Scadenza:</label>
+                        <input type="date" class="form-control" id="data_scadenza" name="data_scadenza" value="{{ finance_entry.data_scadenza.strftime('%Y-%m-%d') }}" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="soggetto">Soggetto:</label>
+                        <input type="text" class="form-control" id="soggetto" name="soggetto" value="{{ finance_entry.soggetto }}" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descrizione">Descrizione:</label>
+                        <input type="text" class="form-control" id="descrizione" name="descrizione" value="{{ finance_entry.descrizione }}" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="importo">Importo:</label>
+                        <input type="number" step="0.01" class="form-control" id="importo" name="importo" value="{{ finance_entry.importo }}" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data_pagamento">Data Pagamento:</label>
+                        <input type="date" class="form-control" id="data_pagamento" name="data_pagamento" value="{{ finance_entry.data_pagamento.strftime('%Y-%m-%d') }}" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="conto">Conto:</label>
+                        <input type="text" class="form-control" id="conto" name="conto" value="{{ finance_entry.conto }}" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stato">Stato:</label>
+                        <input type="text" class="form-control" id="stato" name="stato" value="{{ finance_entry.stato }}" >
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Salva Modifiche</button>
+                    <a href="{{ url_for('finanze') }}" class="btn btn-secondary">Annulla</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Collegamenti ai file JavaScript di Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>affitti brevi</title>
+
+    <!-- Link a Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/dbc18cb8dd.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.6/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.25/sorting/datetime-moment.js"></script>
+    <script type="text/javascript" src="/path/to/jquery-latest.js"></script>
+    <script type="text/javascript" src="/path/to/jquery.tablesorter.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="/path/to/jquery.tablesorter.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+
+    <!-- DataTables JS -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+
+    <!-- Moment.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+    <!-- DataTables datetime-moment plugin -->
+    <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>
+
+    <style>
+        body {
+            line-height: 1;
+            color: #134b67;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .container-fluid {
+            margin-top: 50px;
+        }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0px;
+        }
+
+        .Table-finanze {
+            height: 500px; /* Adjust this height according to your needs */
+            overflow-y: auto;
+        }
+
+        .finanze-form {
+            height: 250px; /* Adjust this height according to your needs */
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            text-transform: uppercase;
+            text-align: center;
+            color: #134b67;
+            font-family: 'Work Sans', sans-serif;
+            font-weight: 900;
+        }
+
+        .card-text {
+            width: 300px; /* Set the desired width */
+            display: inline-block; /* Make the element behave like an inline block */
+        }
+
+        .colored-box {
+            background-color: #ffffff;
+            border-left: 5px solid #74add3;
+        }
+
+        .delete-button {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            font-size: 1.5rem;
+            margin-left: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .modify-button {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            font-size: 1.5rem;
+            margin-left: 10px;
+        }
+
+        .table-scrollable {
+            overflow-x: auto;
+            display: block;
+            max-width: 100%; /* Impostato a 100% per adattarsi al contenitore */
+
+        }
+
+        /* Set the maximum width for the table */
+        .table-scrollable table {
+            min-width: 1500px;
+            min-height: 50px;
+        }
+        .pagato {
+            background-color: green;
+            color: white;  
+        }
+        .scaduto {
+            background-color: red;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;" >
+        <a class="navbar-brand" href="/">Home</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/Calendario"> Calendario</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Finanze">Pagina 2</a>
+                </li>
+                <!-- Aggiungi altri link delle pagine se necessario -->
+            </ul>
+        </div>
+    </nav>
+    <h3>LISTA MOVIMENTI</h3>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-3 colored-box">
+                    <div class="card-body">                 
+                        <div id="finanze-form" class="finanze-form"> 
+                            <form action="/aggiungi_finanza" method="post" class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="data_scadenza">Data Scadenza:</label>
+                                    <input type="date" name="data_scadenza" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="immobile">Immobile:</label>
+                                    <input type="text" name="immobile" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="portale">Portale:</label>
+                                    <input type="text" name="portale" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="soggetto">Soggetto:</label>
+                                    <input type="text" name="soggetto" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="descrizione">Descrizione:</label>
+                                    <input type="text" name="descrizione" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="importo">Importo:</label>
+                                    <input type="number" name="importo" class="form-control" step="0.01" required>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="data_pagamento">Data Pagamento:</label>
+                                    <input type="date" name="data_pagamento" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="conto">Conto:</label>
+                                    <input type="text" name="conto" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="stato">Stato:</label>
+                                    <input type="text" name="stato" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <input type="submit" class="btn btn-primary" value="Aggiungi Finanza">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-0 colored-box">
+                <div class="card-body">                 
+                    <div id="Form_table_finanze" class="Table-finanze"> 
+                        <div class="table-scrollable">
+                            <table id="myTable" class="table table-bordered table-sortable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Data Scadenza</th>
+                                        <th>Immobile</th>
+                                        <th>Portale</th>
+                                        <th>Soggetto</th>
+                                        <th>Descrizione</th>
+                                        <th>Importo</th>
+                                        <th>Data Pagamento</th>
+                                        <th>Conto</th>
+                                        <th>Stato</th>
+                                        <th>Azioni</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for finance in finances %}
+                                        <tr>
+                                            <td>{{ finance.id }}</td>
+                                            <td contenteditable="true" name="nuovo_data_scadenza">{{ finance.data_scadenza }}</td>
+                                            <td contenteditable="true" name="nuovo_immobile">{{ finance.immobile }}</td>
+                                            <td contenteditable="true" name="nuovo_portale">{{ finance.portale }}</td>
+                                            <td contenteditable="true" name="nuovo_soggetto">{{ finance.soggetto }}</td>
+                                            <td contenteditable="true" name="nuovo_descrizione">{{ finance.descrizione }}</td>
+                                            <td contenteditable="true" name="nuovo_importo">{{ finance.importo }} €</td>
+                                            <td contenteditable="true" name="nuovo_data_pagamento">{{ finance.data_pagamento }}</td>
+                                            <td contenteditable="true" name="nuovo_conto">{{ finance.conto }}</td>
+                                            <td contenteditable="true" name="nuovo_stato">{{ finance.stato }}</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <a href="{{ url_for('modifica_finance', id=finance.id) }}" class="btn btn-warning btn-sm">Modifica</a>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <form action="{{ url_for('elimina_finance', id=finance.id) }}" method="post" class="d-inline">
+                                                            <input type="hidden" name="_method" value="delete">
+                                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questa finanza?')">Elimina</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link a Bootstrap JS e Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> 
+    <script>
+        function confermaEliminazione() {
+            return confirm("Sei sicuro di voler eliminare questa prenotazione?");
+        }
+    </script>
+<script>
+    $(document).ready(function () {
+      $(".modify-button").on("click", function () {
+        // Nascondi le celle non modificabili e mostra i campi di input
+        $(this).closest("tr").find("[contenteditable]").hide();
+        $(this).closest("tr").find("input, select").show();
+      });
+    });
+</script>
+
+<script>
+    $(".modify-button").on("click", function () {
+        var row = $(this).closest("tr");
+
+        // Popola i campi nascosti con i valori corrispondenti
+        row.find("[name=nuovo_data_prenotazione]").val(row.find("[name=nuovo_data_prenotazione]").text().trim());
+        row.find("[name=nuovo_immobile]").val(row.find("[name=nuovo_immobile]").text().trim());
+        row.find("[name=nuovo_portale]").val(row.find("[name=nuovo_portale]").text().trim());
+        row.find("[name=nuovo_numero]").val(row.find("[name=nuovo_numero]").text().trim());
+        row.find("[name=nuovo_nome_cognome]").val(row.find("[name=nuovo_nome_cognome]").text().trim());
+        row.find("[name=nuovo_numero_telefono]").val(row.find("[name=nuovo_numero_telefono]").text().trim());
+        row.find("[name=nuovo_data_checkin]").val(row.find("[name=nuovo_data_checkin]").text().trim());
+        row.find("[name=nuovo_data_checkout]").val(row.find("[name=nuovo_data_checkout]").text().trim());
+        row.find("[name=nuovo_numero_ospiti]").val(row.find("[name=nuovo_numero_ospiti]").text().trim());
+        row.find("[name=nuovo_totale_lordo]").val(row.find("[name=nuovo_totale_lordo]").text().trim());
+        row.find("[name=nuovo_no_tax]").val(row.find("[name=nuovo_no_tax]").text().trim());
+        row.find("[name=nuovo_commissioni]").val(row.find("[name=nuovo_commissioni]").text().trim());
+
+        // Invia il form
+        row.find("form").submit();
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $(".modify-button").on("click", function () {
+            // Nascondi/mostra i campi aggiuntivi quando si fa clic su Modifica
+            $(this).closest("tr").find("[name^=nuovo_]").toggleClass("hidden");
+            $(this).closest("tr").find("input, select").not("[name^=nuovo_]").toggle();
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".modify-form").forEach(function (form) {
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();  // Evita l'invio del form
+                // Aggiungi qui la logica per gestire la modifica del form
+            });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".delete-button").forEach(function (button) {
+            button.addEventListener("click", function (event) {
+                if (!confirm("Sei sicuro di voler eliminare questa prenotazione?")) {
+                    event.preventDefault();  // Annulla l'azione predefinita (eliminazione)
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        // Trova tutte le righe della tabella
+        $('#myTable tbody tr').each(function(){
+            // Trova il testo nelle colonne "Stato", "Data Scadenza" e "Data Pagamento"
+            var stato = $(this).find('td[name="nuovo_stato"]').text().trim().toLowerCase();
+            var dataScadenza = new Date($(this).find('td[name="nuovo_data_scadenza"]').text());
+            var dataPagamento = new Date($(this).find('td[name="nuovo_data_pagamento"]').text());
+    
+            // Ottieni la data corrente
+            var oggi = new Date();
+    
+            // Verifica se lo stato è "pagato" e aggiungi la classe "pagato"
+            if (stato === 'pagato') {
+                $(this).addClass('pagato');
+            }
+    
+            // Verifica se è scaduto e non è pagato, aggiungi la classe "scaduto"
+            if (dataScadenza < oggi && stato !== 'pagato') {
+                $(this).addClass('scaduto');
+            }
+        });
+    });
+    </script>
+        
+</body>
+</html>
