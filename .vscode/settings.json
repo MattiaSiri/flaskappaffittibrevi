@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/8e23234b-f1ec-437e-a2f0-0f93ec8e2eaf/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/Affittibrevisitoweb-3",
+    "appService.deploySubpath": "."
+}
